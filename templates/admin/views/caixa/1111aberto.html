@@ -1,0 +1,611 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap CSS -->
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .pdv-header {
+        background-color: #3b3f5c;
+        color: white;
+        padding: 10px;
+    }
+
+    .pdv-content {
+        background-color: #ffffff;
+        padding: 10px;
+    }
+
+    .pdv-content h5 {
+        font-size: 12px;
+        /* Diminua o tamanho do título */
+    }
+
+    .pdv-content .table {
+        font-size: 11px;
+        /* Diminua o tamanho da fonte na tabela */
+        font-family: 'Courier New', Courier, monospace;
+        margin-bottom: 1px;
+        /* Reduza o espaçamento inferior da tabela */
+    }
+
+    .pdv-content .table th,
+    .pdv-content .table td {
+        padding: 4px;
+        /* Reduza o padding das células da tabela */
+    }
+
+    .pdv-footer {
+        padding: 5px;
+        /* Reduza o padding do rodapé */
+        background-color: #e8e7e2;
+    }
+
+    .pdv-footer p {
+        margin: 5px 0;
+        /* Reduza o espaçamento entre os parágrafos */
+        font-size: 12px;
+        /* Diminua o tamanho da fonte nos parágrafos */
+    }
+
+    .list-group-item {
+        font-size: 12px;
+        /* Diminua o tamanho da fonte dos itens da lista */
+        padding: 5px;
+        /* Reduza o padding dos itens da lista */
+    }
+
+    .pdv-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .pdv-item:last-child {
+        border-bottom: none;
+    }
+
+    .pdv-total {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #3b3f5c;
+    }
+
+    .btn {
+        margin: 5px;
+    }
+
+    .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .button-container button {
+        background-color: transparent;
+        /* Remova a cor de fundo */
+        border: none;
+        /* Remova a borda */
+        padding: 3px;
+        /* Adicione um padding */
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+        /* Para posicionar os elementos internamente */
+    }
+
+    .button-container button:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        /* Leve mudança ao passar o mouse */
+    }
+
+    .button-container button .icon {
+        font-size: 50px;
+        /* Aumente o tamanho do ícone */
+        color: #2e6032;
+        /* Cor do ícone */
+    }
+
+    .button-container button .bico-number {
+        position: absolute;
+        top: 15px;
+        /* Posição do número */
+        left: 30%;
+        transform: translateX(-50%);
+        font-size: 13px;
+        font-weight: bold;
+        color: black;
+        /* Cor do número */
+    }
+
+    .button-container button .text {
+        margin-top: -1px;
+        /* Espaçamento acima do texto */
+        font-size: 0.9em;
+        color: black;
+        /* Cor do texto */
+    }
+
+    .btn-quadrado {
+        width: 100px;
+        /* Largura dos botões */
+        height: 100px;
+        /* Altura dos botões */
+        margin: 5px;
+        /* Espaçamento entre os botões */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 14px;
+        /* Tamanho da fonte */
+    }
+
+    .btn-quadrado i {
+        font-size: 24px;
+        /* Tamanho do ícone */
+        margin-bottom: 5px;
+        /* Espaçamento entre o ícone e o texto */
+    }
+</style>
+{{flash()}}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- User and Session Information -->
+            <div class="col-md-12">
+                <div class="card pdv-header">
+                    <div class="card-header bg-light border d-flex justify-content-between align-items-center mb-1">
+                        <div class="col-md-12">
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Operador</span><br>
+                                <span class="text-success">{{usuario().nome}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Caixa</span><br>
+                                <span class="text-success">{{caixa.id}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Data/hora abertura:</span><br>
+                                <span class="text-success">{{caixa.DataHoraAbertura | date('d/m/Y H:i:s')}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Valor Inicial:</span><br>
+                                <span class="text-success">{{caixa.ValorAbertura}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Valor Movimentado:</span><br>
+                                <span class="text-success">{{caixa.ValorAtualCaixa}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Valor Sangria:</span><br>
+                                <span class="text-danger">{{caixa.ValorSangria}}</span>
+                            </span>
+                            <span class="badge bg-white text-secondary border">
+                                <span class="text-dark">Cliente:</span><br>
+                                <span id="nome_cliente_text" class="text-success">{{operador.nome_cliente}}</span>
+                            </span>
+                            <span id="numero-venda" class="badge bg-white text-secondary border">
+                                <span class="text-dark"># Venda:</span><br>
+                                <span class="text-success">{{operador.id}}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Bicos -->
+                    <div class="card-header bg-light border d-flex justify-content-between align-items-center mb-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div class="button-container">
+                                        {% for bico in bicos %}
+                                        <button type="button" class="btn" data-toggle="modal"
+                                            data-target="#modalSelecionarClienteBico{{ bico.id }}">
+                                            <div class="icon">
+                                                <i class="fa-solid fa-gas-pump"></i>
+                                            </div>
+                                            <div class="bico-number">{{ bico.numero_bico }}</div>
+                                            <div class="text">{{
+                                                resumirTexto(combustiveisMap[bico.combustivel_id].descricao, 3) }}</div>
+                                        </button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Registro de Produto -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card pdv-content">
+                                <div id="lista-itens">
+                                    <!-- Dynamically added product items -->
+                                </div>
+                                <div class="pdv-footer">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Produto</th>
+                                                <th>Quantidade</th>
+                                                <th>Subtotal</th>
+                                                <th class="text-right">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% set total_itens = 0 %}
+                                            {% set subtotal_geral = 0 %}
+                                            {% set total_geral = 0 %}
+
+                                            {% for produtoVenda in produtosVenda %}
+                                            {% if produtoVenda.status == 0 %}
+                                            <tr style="color: red;">
+                                                <td>{{ produtoVenda.id }}</td>
+                                                <td>{{ produtoVenda.produto }} (Cancelado)</td>
+                                                <td>{{ produtoVenda.quantidade }}</td>
+                                                <td>R$ <span class="subtotal">{{ produtoVenda.preco_venda }}</span></td>
+                                                <td class="text-right">R$ <span class="total">{{
+                                                        (produtoVenda.preco_venda *
+                                                        produtoVenda.quantidade)|number_format(2, ',', '.') }}</span>
+                                                </td>
+                                            </tr>
+                                            {% else %}
+                                            <tr>
+                                                <td>{{ produtoVenda.id }}</td>
+                                                <td>{{ produtoVenda.produto }}</td>
+                                                <td>{{ produtoVenda.quantidade }}</td>
+                                                <td>R$ <span class="subtotal">{{ produtoVenda.preco_venda }}</span></td>
+                                                <td class="text-right">R$ <span class="total">{{
+                                                        (produtoVenda.preco_venda *
+                                                        produtoVenda.quantidade)|number_format(2, ',', '.') }}</span>
+                                                </td>
+                                            </tr>
+                                            {% set total_itens = total_itens + produtoVenda.quantidade %}
+                                            {% set subtotal_geral = subtotal_geral + (produtoVenda.preco_venda *
+                                            produtoVenda.quantidade) %}
+                                            {% endif %}
+                                            {% endfor %}
+
+                                            {% set total_geral = subtotal_geral %}
+                                        </tbody>
+                                    </table>
+                                    <!-- Footer -->
+                                    <div class="footer-info">
+                                        <p style="color: black; font-size: 12px;">Total de itens: <span
+                                                id="total-itens">{{ total_itens }}</span></p>
+                                        <p style="color: black; font-size: 12px;">Subtotal: R$ <span
+                                                id="subtotal-geral">{{ subtotal_geral|number_format(2, ',', '.')
+                                                }}</span></p>
+                                        <p style="color: black; font-size: 12px;">Total: R$ <span id="total-geral">{{
+                                                total_geral|number_format(2, ',', '.') }}</span></p>
+                                    </div>
+                                    <form id="form-venda-produto" class="formularioAjaxPDV"
+                                        action="{{ url('admin/caixa/venda-produto') }}" method="POST">
+                                        <div class="form-group mb-3">
+                                            <input type="text" id="id_cliente" value="{{operador.id_cliente}}" name="id_cliente">
+                                            <input type="text" id="id_venda" value="{{operador.id}}" name="id_venda">
+                                            <input type="hidden" id="nome_cliente" value="{{operador.nome_cliente}}"
+                                                name="nome_cliente">
+                                            <input type="text" class="form-control obg" id="produto" name="produto"
+                                                placeholder="Digite para buscar o produto..." autocomplete="off">
+                                            <input type="hidden" id="produto-id" name="produto_id">
+                                            <div id="produto-list" class="list-group"
+                                                style="position: absolute; z-index: 1000; width: 100%;"></div>
+                                        </div>
+                                        <input type="hidden" id="quantidade" name="quantidade" value="1">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                           
+                            <div class="row mb-3">
+                                <div class="col-md-12 d-flex flex-wrap">
+                                    <button type="button" class="btn btn-secondary btn-quadrado" id="btnClienteCPF"
+                                        data-toggle="modal" data-target="#modalSelecionarCliente">
+                                        <i class="fa fa-user"></i>
+                                        Cliente/CPF (F4)
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-quadrado" data-toggle="modal"
+                                        data-target="#modalCancelarItem">
+                                        <i class="fa fa-times"></i>
+                                        Cancelar Item
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-quadrado">
+                                        <i class="fa fa-ban"></i>
+                                        Cancelar Venda (F9)
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-quadrado" data-toggle="modal"
+                                        data-target="#modalFinalizarCompra">
+                                        <i class="fa fa-check"></i>
+                                        Finalizar Venda (F2)
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="d-flex justify-content-between">
+
+                                </div>
+                            </div>
+                            <div class="ajaxLoading" style="display: none;">Carregando...</div>
+                        </div>
+
+
+                        <!-- Lista de Produtos e Totais -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Product Registration -->
+
+
+
+        <div class="row">
+            {% for bico in bicos %}
+            <div class="modal modalCombustivel fade" id="modalSelecionarClienteBico{{ bico.id }}" tabindex="-1"
+                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Venda de {{ combustiveisMap[bico.combustivel_id].descricao }} no
+                                bico {{ bico.numero_bico }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-venda-bico-{{ bico.id }}" class="formularioAjaxCombustivel"
+                                action="{{ url('admin/caixa/venda-combustivel') }}" method="POST">
+                                <input type="hidden" name="bico_id" value="{{ bico.id }}">
+                                <input type="hidden" name="combustivel_id" value="{{ bico.combustivel_id }}">
+                                <input type="hidden" id="id_cliente_combustivel" value="{{operador.id}}" name="id_cliente">
+                                <input type="hidden" id="nome_cliente" value="{{operador.nome_cliente}}">
+                                <div class="form-group">
+                                    <label for="litrosBico{{ bico.id }}">Litros</label>
+                                    <input type="number" class="form-control" id="litrosBico{{ bico.id }}"
+                                        name="quantidade" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="precoUnitarioBico{{ bico.id }}">Preço Unitário</label>
+                                    <input type="number" class="form-control"
+                                        value="{{ combustiveisMap[bico.combustivel_id].vlr_venda }}"
+                                        id="precoUnitarioBico{{ bico.id }}" name="preco_unitario" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="valorTotalBico{{ bico.id }}">Valor Total</label>
+                                    <input type="text" class="form-control" id="valorTotalBico{{ bico.id }}"
+                                        name="valor_total">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-primary">Confirmar Venda</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    {% for bico in bicos %}
+                    (function () {
+                        var litrosInput = document.getElementById('litrosBico{{ bico.id }}');
+                        var precoUnitarioInput = document.getElementById('precoUnitarioBico{{ bico.id }}');
+                        var valorTotalInput = document.getElementById('valorTotalBico{{ bico.id }}');
+            
+                        litrosInput.addEventListener('input', function () {
+                            var litros = parseFloat(litrosInput.value);
+                            var precoUnitario = parseFloat(precoUnitarioInput.value);
+                            if (!isNaN(litros) && !isNaN(precoUnitario)) {
+                                valorTotalInput.value = (litros * precoUnitario).toFixed(2);
+                            }
+                        });
+            
+                        valorTotalInput.addEventListener('input', function () {
+                            var valorTotal = parseFloat(valorTotalInput.value);
+                            var precoUnitario = parseFloat(precoUnitarioInput.value);
+                            if (!isNaN(valorTotal) && !isNaN(precoUnitario) && precoUnitario != 0) {
+                                litrosInput.value = (valorTotal / precoUnitario).toFixed(2);
+                            }
+                        });
+                    })();
+                    {% endfor %}
+                });
+            </script>
+            
+
+
+            <div class="modal fade" id="modalSelecionarCliente" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Selecionar Cliente</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="clienteSelect">Clientes:</label>
+                            <select class="form-control" id="clienteSelect">
+                                {% for cliente in clientes %}
+                                <option value="{{ cliente.id }}">{{ cliente.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-primary" id="selecionar-cliente">Selecionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalCancelarItem" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cancelar Item</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="form-cancelar-produto" class="" action="{{ url('admin/caixa/cancelar-produto') }}"
+                            method="POST">
+                            <div class="modal-body">
+
+                                <label for="clienteSelect">Digite o ID do produto:</label>
+                                <input type="text" name="id_produto" class="form-control" required>
+                                <input type="hidden" name="id_caixa" value="{{operador.id}}">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary" id="cancelar-item">Cancelar
+                                    Item</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Finalizar Compra -->
+            <div class="modal fade" id="modalFinalizarCompra" tabindex="-1" role="dialog"
+                aria-labelledby="modalFinalizarCompraLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalFinalizarCompraLabel">Finalizar Compra</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div
+                                class="card-header bg-light border d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <span class="badge bg-white text-secondary border">
+                                        <span class="text-dark">Informativo do caixa</span><br><br>
+                                        <span class="text-success">Total Geral: <span id="valor_total">{{ total
+                                                | number_format(2, ',', '.') }}</span></span>
+                                    </span>
+
+                                    <span class="badge bg-white text-secondary border">
+                                        <span class="text-dark">Desconto aplicado na venda</span><br><br>
+                                        <span class="text-success">{{operador.desconto}}</span>
+                                    </span>
+                                    <span class="badge bg-white text-secondary border">
+                                        <span class="text-dark">Valor de troco</span><br><br>
+                                        <span class="text-success" id="valor-troco">0.00</span>
+                                    </span>
+
+
+                                </div>
+
+                            </div>
+
+                            <form id="form-finalizar-compra" action="{{ url('admin/caixa/finalizar-venda') }}"
+                                method="POST">
+                                <div class="row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="valor_recebido">Valor recebido</label>
+                                        <input type="text" class="form-control dinheiro" id="valor_recebido"
+                                            name="valor_recebido" value="0">
+                                        <input type="hidden" name="vendaID" value="{{operador.id}}">
+                                        <input type="text" name="valorTotal" value="{{ total
+                                            | number_format(2, ',', '.') }}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="desconto">Desconto</label>
+                                        <input type="text" class="form-control dinheiro" id="desconto" name="desconto"
+                                            value="0">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="troco">Troco</label>
+                                        <input type="text" class="form-control dinheiro" id="troco" name="troco"
+                                            value="0">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="forma-pagamento">Forma de Pagamento</label>
+                                    <select class="form-control" id="forma-pagamento" name="forma_pagamento">
+                                        <option value="dinheiro">Dinheiro</option>
+                                        <option value="credito">Cartão de Crédito</option>
+                                        <option value="debito">Cartão de Débito</option>
+                                        <option value="pix">Pix</option>
+                                        <option value="mais">Mais de 1 forma</option>
+                                    </select>
+                                </div>
+                                <div class="row" id="multi-pagamento" style="display: none;">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="vlr_dinheiro">Vlr dinheiro</label>
+                                        <input type="text" class="form-control dinheiro" id="vlr_dinheiro"
+                                            name="vlr_dinheiro" value="0">
+                                        <input type="hidden" name="vendaID" value="{{ operador.id }}">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="vlr_cartao">Vlr cartão</label>
+                                        <input type="text" class="form-control dinheiro" id="vlr_cartao"
+                                            name="vlr_cartao" value="0">
+                                    </div>
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="vlr_pix">Vlr pix</label>
+                                        <input type="text" class="form-control dinheiro" id="vlr_pix" name="vlr_pix"
+                                            value="0">
+                                    </div>
+                                </div>
+                                <button type="submit" class="col-md-12 btn btn-success">Finalizar Venda</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</body>
+
+</div>
+</div>
+
+
+<!-- Product List and Totals -->
+<!-- Product List and Totals -->
+
+
+
+</div>
+
+
+</div>
+<script>
+
+</script>
+</body>
+{% endblock %}

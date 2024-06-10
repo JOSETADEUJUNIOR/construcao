@@ -1,0 +1,283 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Informar dados de configuração
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="p-3 card border-0 shadow-sm">
+    <!-- Abas -->
+    <ul class="nav nav-tabs" id="clienteTabs" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="dadosCliente-tab" data-bs-toggle="tab" href="#dadosCliente" role="tab"
+                aria-controls="dadosCliente" aria-selected="true">Dados Gerais da empresa</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="enderecos-tab" data-bs-toggle="tab" href="#enderecos" role="tab"
+                aria-controls="enderecos" aria-selected="false">Dados do site</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="dadosAdicionais-tab" data-bs-toggle="tab" href="#dadosAdicionais" role="tab"
+                aria-controls="dadosAdicionais" aria-selected="false">Rede sociais</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="observacoes-tab" data-bs-toggle="tab" href="#observacoes" role="tab"
+                aria-controls="observacoes" aria-selected="false">Sobre-nós</a>
+        </li>
+    </ul>
+    <form action="{{url('admin/configuracao/editar/'~dados.id) }}" method="post" enctype="multipart/form-data">
+        <div class="tab-content" id="clienteTabsContent">
+            <div class="tab-pane fade show active" id="dadosCliente" role="tabpanel" aria-labelledby="dadosCliente-tab">
+                <div class="mt-3 row">
+                    <div class="mb-3 col-md-3">
+                        <label for="config_nome" class="form-label">Nome da empresa*</label>
+                        <input type="text" name="config_nome" id="config_nome" value="{{dados.config_nome}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="titulo" class="form-label">Endereço da empresa*</label>
+                        <input type="text" name="config_endereco" id="config_endereco" value="{{dados.config_endereco}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="titulo" class="form-label">CEP da empresa</label>
+                        <input type="text" name="config_cep" id="config_cep" value="{{dados.config_cep}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="titulo" class="form-label">Horário de funcionamento</label>
+                        <input type="text" name="config_horario" id="config_horario" value="{{dados.config_horario}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="titulo" class="form-label">Telefone WhatsApp</label>
+                        <input type="text" name="config_fone1" id="config_fone1" value="{{dados.config_fone1}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="titulo" class="form-label">Telefone Fixo</label>
+                        <input type="text" name="config_fone2" id="config_fone2" value="{{dados.config_fone2}}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-6 col-md-6">
+                        <label for="email" class="form-label">E-mail da empresa</label>
+                        <input type="text" name="config_email" id="config_email" value="{{dados.config_email}}"
+                            class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="capa" class="form-label">Logo da empresa</label>
+                            <input class="form-control" type="file" id="capa" name="logo" accept=".png, .jpg, .jpeg">
+                        </div>
+                        {% if dados.config_foto %}
+                        <div class="float-xl-start float-lg-none capa mx-auto">
+                            <div class="card border-0">
+                                <a data-fancybox data-caption="{{dados.empresa}}" class="overflow zoom " href="{{url('uploads/empresa/'~dados.config_foto)}}">
+                                    <img src="{{url('uploads/empresa/'~dados.config_foto)}}" />
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                        {% endif %}  
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="favicon" class="form-label">Favicon <span>(icone no topo do site)</span></label>
+                            <input class="form-control" type="file" id="favicon" name="favicon" accept=".png, .jpg, .jpeg">
+                        </div>
+                        {% if dados.config_favicon %}
+                        <div class="float-xl-start float-lg-none capa mx-auto">
+                            <div class="card border-0">
+                                <a data-fancybox data-caption="{{dados.empresa}}" class="overflow zoom " href="{{url('uploads/empresa/favicon/'~dados.config_favicon)}}">
+                                    <img src="{{url('uploads/empresa/favicon/'~dados.config_favicon)}}" />
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                        {% endif %}  
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="enderecos" role="tabpanel" aria-labelledby="enderecos-tab">
+                <!-- Conteúdo da aba "Endereços" -->
+                <div class="mt-3 row">
+                    <hr class="my-4">
+                    <h4 class="mb-4">Dados de Estilização do slide 1</h4>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="capa" class="form-label">Slide 1<span>(carrosel de imagens no site)</span></label>
+                            <input class="form-control" type="file" id="slide" name="slide" accept=".png, .jpg, .jpeg">
+                           
+                        </div>
+                        {% if dados.config_foto_slide1 %}
+                        <div class="float-xl-start float-lg-none capa mx-auto">
+                            <div class="card border-0">
+                                <a data-fancybox data-caption="{{dados.empresa}}" class="overflow zoom " href="{{url('uploads/slides/slide_um/'~dados.config_foto_slide1)}}">
+                                    <img width="600" height="150" src="{{url('uploads/slides/slide_um/'~dados.config_foto_slide1)}}" />
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                        {% endif %}  
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Texto do slide1</label>
+                        <input type="text" name="config_site_texto_slide1" id="config_site_texto_slide1"
+                            value="{{dados.config_texto_slide1}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Descrição do botão do slide1</label>
+                        <input type="text" name="config_site_descricao_botao_slide1" id="config_site_descricao_botao_slide1"
+                            value="{{dados.config_descricao_botao_slide1}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">link do botão do slide1</label>
+                        <input type="url" name="config_site_link_slide1" id="config_site_link_slide1"
+                            value="{{dados.config_link_botao_slide1}}" class="form-control">
+                    </div>
+                    <hr class="my-4">
+                    <h4 class="mb-4">Dados de Estilização do slide 2</h4>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="capa" class="form-label">Slide 2<span>(carrosel de imagens no site)</span></label>
+                            <input class="form-control" type="file" id="slide_segundo" name="slide_segundo" accept=".png, .jpg, .jpeg">
+                        </div>
+                        {% if dados.config_foto_slide2 %}
+                        <div class="float-xl-start float-lg-none capa mx-auto">
+                            <div class="card border-0">
+                                <a data-fancybox data-caption="{{dados.empresa}}" class="overflow zoom " href="{{url('uploads/slides/slide_segundo/'~dados.config_foto_slide2)}}">
+                                    <img width="100%" height="150" src="{{url('uploads/slides/slide_segundo/'~dados.config_foto_slide2)}}" />
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                            <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                        {% endif %}
+                    
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Texto do slide2</label>
+                        <input type="text" name="config_site_texto_slide2" id="config_site_texto_slide2"
+                            value="{{dados.config_texto_slide2}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Descrição do botão do slide2</label>
+                        <input type="text" name="config_site_descricao_botao_slide2" id="config_site_descricao_botao_slide2"
+                            value="{{dados.config_descricao_botao_slide2}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">link do botão do slide2</label>
+                        <input type="text" name="config_site_link_slide2" id="config_site_link_slide2"
+                            value="{{dados.config_link_botao_slide2}}" class="form-control">
+                    </div>
+
+                    <hr class="my-4">
+                    <h4 class="mb-4">Dados de Estilização do slide 3</h4>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="capa" class="form-label">Slide 2<span>(carrosel de imagens no site)</span></label>
+                            <input class="form-control" type="file" id="slide_terceiro" name="slide_terceiro" accept=".png, .jpg, .jpeg">
+                        </div>
+                        {% if dados.config_foto_slide3 %}
+                        <div class="float-xl-start float-lg-none capa mx-auto">
+                            <div class="card border-0">
+                                <a data-fancybox data-caption="{{dados.empresa}}" class="overflow zoom " href="{{url('uploads/slides/slide_terceiro/'~dados.config_foto_slide3)}}">
+                                    <img width="100%" height="150" src="{{url('uploads/slides/slide_terceiro/'~dados.config_foto_slide3)}}" />
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                            <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                        {% endif %}
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Texto do slide3</label>
+                        <input type="text" name="config_site_texto_slide3" id="config_site_texto_slide3"
+                            value="{{dados.config_texto_slide3}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Descrição do botão do slide3</label>
+                        <input type="text" name="config_site_descricao_botao_slide3" id="config_site_descricao_botao_slide3"
+                            value="{{dados.config_descricao_botao_slide3}}" class="form-control">
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">link do botão do slide3</label>
+                        <input type="text" name="config_site_link_slide3" id="config_site_link_slide3"
+                            value="{{dados.config_link_botao_slide3}}" class="form-control">
+                    </div>
+                    <div class="mt-3 mb-3">
+                        <label for="texto" class="form-label">Informações para o rodapé</label>
+                        <textarea name="config_rodape" class="form-control ckeditor"
+                            rows="3">{{dados.rodape}}</textarea>
+                    </div>
+                    <div class="mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Meta Keywords</label>
+                        <input type="text" name="config_site_keywords" id="config_site_keywords"
+                            value="{{dados.config_site_keywords}}" class="form-control">
+                    </div>
+                    <div class="mt-3 mb-12 col-md-12">
+                        <label for="titulo" class="form-label">Descrição (Meta description)</label>
+                        <input type="text" name="config_site_description" id="config_site_description"
+                            value="{{dados.config_site_description}}" class="form-control">
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="dadosAdicionais" role="tabpanel" aria-labelledby="dadosAdicionais-tab">
+               <div class="mt-3 row">
+                <div class="mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Url do facebook</label>
+                    <input type="text" name="config_site_facebook" id="config_site_facebook"
+                        value="{{dados.config_facebook}}" class="form-control">
+                </div>
+                <div class="mt-3 mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Url do Twitter</label>
+                    <input type="text" name="config_site_twitter" id="config_site_twitter"
+                        value="{{dados.config_twitter}}" class="form-control">
+                </div>
+                <div class="mt-3 mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Url do Linkedin</label>
+                    <input type="text" name="config_site_linkedin" id="config_site_linkedin"
+                        value="{{dados.config_linkedin}}" class="form-control">
+                </div>
+                <div class="mt-3 mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Url do instagram</label>
+                    <input type="text" name="config_site_instagram" id="config_site_instagram"
+                        value="{{dados.config_instagram}}" class="form-control">
+                </div>
+               </div>
+            </div>
+            <div class="tab-pane fade" id="observacoes" role="tabpanel" aria-labelledby="observacoes-tab">
+                <!-- Conteúdo da aba "Observações" -->
+                <div class="mt-3 row">
+                    <div class="mb-3">
+                        <label for="texto" class="form-label">Sobre a empresa</label>
+                        <textarea name="config_sobre" class="form-control ckeditor"
+                            rows="3">{{dados.config_site_ga}}</textarea>
+                    </div>
+                    <div class="d-grid">
+                        <input type="submit" class="btn btn-dark"
+                            value="{% if dados.id %}Atualizar{%else%}Cadastrar{%endif%}">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+</form>
+{% endblock %}

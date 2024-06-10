@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="container my-5">
+    <div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 mx-auto border rounded p-3 mb-4">
+        <div class="my-3">
+            {{flash()}}
+        </div>
+
+        <div class="card text-center border-0">
+            <div class="card-header fw-bold bg-success">
+                Realize seu Login
+            </div>
+            <div class="card-body">
+                <p>Informe os dados abaixo</p>
+                
+                <form class="formularioAjax" action="{{url('login')}}" method="post">
+
+                        <div class="mb-3">
+                            <div class="form-floating mb-3">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="E-mail">
+                                <label for="email">E-mail</label>
+                            </div> 
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating mb-3">
+                                <input type="senha" name="senha" id="senha" class="form-control" placeholder="Senha">
+                                <label for="senha">Senha</label>
+                            </div> 
+                        </div>
+
+                    <div class="d-grid gap-2">
+                        <input type="submit" class="btn btn-dark" value="Logar">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center">
+        <p class="fw-bold">Ainda não possui cadastro no {{constant('SITE_NOME')}}?</p>
+        <a href="{{url('cadastro')}}" class="btn btn-outline-success">Realizar cadastro</a>
+    </div>
+</div>
+
+{% endblock %}

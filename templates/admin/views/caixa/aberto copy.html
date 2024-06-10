@@ -1,0 +1,208 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<style>
+    .lista-itens {
+        background-color: #fff8dc; /* Cor de fundo amarelada */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .item-venda {
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+
+    .item-venda:last-child {
+        border-bottom: none; /* Remove a borda inferior do último item */
+    }
+</style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Caixa Aberto
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-light border d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Operador</span><br><br>
+                <span class="text-success">{{usuario().nome}}</span> 
+            </span> 
+
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Data/hora abertura do caixa:</span><br><br>
+                <span class="text-success">{{caixa.DataHoraAbertura | date('d/m/Y H:i:s')}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Inicial:</span><br><br>
+                <span class="text-success">{{caixa.ValorAbertura}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Movimentado:</span><br><br>
+                <span class="text-success">{{caixa.ValorAtualCaixa}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Sangria:</span><br><br>
+                <span class="text-success">{{caixa.ValorSangria}}</span>
+            </span>
+        </div>
+        <a href="{{url('admin/usuarios/cadastrar')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Post">
+            Cadastrar
+        </a>
+    </div>
+    <div class="card-body">
+        <form action="{{url('admin/caixa/venda')}}" method="post" class="">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="tipoVenda" class="form-label">Tipo de Venda</label>
+                    <select class="form-select" id="tipoVenda" name="tipoVenda">
+                        <option value="combustivel">Combustível</option>
+                        <option value="produto">Produto</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="itemVenda" class="form-label">Item</label>
+                    <select class="form-select" id="itemVenda" name="itemVenda">
+                        <!-- Combustíveis e produtos serão preenchidos dinamicamente -->
+                        {% for item in combustiveis %}
+                        <option value="{{item.id}}" data-tipo="combustivel" data-nome="{{item.descricao}}" data-valor="{{item.vlr_venda}}" data-quantidade-disponivel="{{item.estoque}}">{{item.descricao}} / R$:{{item.vlr_venda}}</option>
+                        {% endfor %}
+                        {% for item in produtos %}
+                        <option value="{{item.id}}" data-tipo="produto" data-nome="{{item.Nome}}" data-valor="{{item.PrecoVenda}}" data-quantidade-disponivel="{{item.estoque}}">{{item.Nome}} / R$:{{item.PrecoVenda}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="quantidade" class="form-label">Quantidade</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade" min="1">
+                </div>
+            </div>
+            <div class="d-grid mb-3">
+                <button type="button" class="btn btn-primary" id="inserirItem">Inserir Item</button>
+            </div>
+            <div id="itensVenda" class="mt-3">
+                <div class="lista-itens">
+                    <!-- Lista de itens adicionados à venda -->
+                </div>
+            </div>
+            <div class="d-grid">
+                <input type="submit" class="btn btn-dark" value="Abrir Caixa">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Inicializa a array de itensVenda
+const itensVenda = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoVendaSelect = document.getElementById('tipoVenda');
+    const itemVendaSelect = document.getElementById('itemVenda');
+    const inserirItemButton = document.getElementById('inserirItem');
+    const itensVendaDiv = document.getElementById('itensVenda');
+
+    // Filtra os itens no select de acordo com o tipo de venda
+    tipoVendaSelect.addEventListener('change', function() {
+        const selectedTipo = this.value;
+        Array.from(itemVendaSelect.options).forEach(option => {
+            option.style.display = option.getAttribute('data-tipo') === selectedTipo ? 'block' : 'none';
+        });
+        itemVendaSelect.value = '';
+    });
+
+    // Insere o item na lista de venda
+    inserirItemButton.addEventListener('click', function() {
+        const selectedItem = itemVendaSelect.options[itemVendaSelect.selectedIndex];
+        const quantidade = document.getElementById('quantidade').value;
+
+        if (selectedItem && quantidade > 0) {
+            const itemId = selectedItem.value;
+            console.log(itemId);
+            const itemTipo = selectedItem.getAttribute('data-tipo');
+            const itemNome = selectedItem.getAttribute('data-nome');
+            const itemValor = selectedItem.getAttribute('data-valor');
+            const itemQuantidadeDisponivel = selectedItem.getAttribute('data-quantidade-disponivel');
+            const valorTotal = parseFloat(itemValor) * parseInt(quantidade);
+
+            // Cria um objeto com as informações do item
+            const itemInfo = {
+                id: itemId,
+                tipo: itemTipo,
+                nome: itemNome,
+                valor: itemValor,
+                quantidade: quantidade,
+                quantidade_disponivel: itemQuantidadeDisponivel,
+                valor_total: valorTotal.toFixed(2)
+            };
+
+            // Adiciona o objeto à array de itensVenda
+            itensVenda.push(itemInfo);
+
+            // Atualiza a visualização dos itens na página
+            atualizarListaItens();
+
+            // Limpa os campos do formulário após inserir o item
+            itemVendaSelect.value = '';
+            document.getElementById('quantidade').value = '';
+        }
+    });
+
+    // Função para atualizar a visualização dos itens na página
+    function atualizarListaItens() {
+        const listaItensDiv = document.querySelector('.lista-itens');
+        listaItensDiv.innerHTML = ''; // Limpa a lista antes de atualizar
+
+        // Percorre a array de itensVenda e cria os elementos HTML correspondentes
+        itensVenda.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'item-venda mb-2';
+            itemElement.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${item.nome} - Quantidade: ${item.quantidade} - Valor: R$ ${item.valor} - Total: R$ ${item.valor_total}</span>
+                    <input type="hidden" name="itensVenda[${item.id}][id]" value="${item.id}">
+                    <input type="hidden" name="itensVenda[${item.id}][tipo]" value="${item.tipo}">
+                    <input type="hidden" name="itensVenda[${item.id}][quantidade]" value="${item.quantidade}">
+                    <input type="hidden" name="itensVenda[${item.id}][nome]" value="${item.nome}">
+                    <input type="hidden" name="itensVenda[${item.id}][valor]" value="${item.valor}">
+                    <input type="hidden" name="itensVenda[${item.id}][quantidade_disponivel]" value="${item.quantidade_disponivel}">
+                    <input type="hidden" name="itensVenda[${item.id}][valor_total]" value="${item.valor_total}">
+                    <button type="button" class="btn btn-danger btn-sm removerItem">Remover</button>
+                </div>
+            `;
+            listaItensDiv.appendChild(itemElement);
+        });
+    }
+
+    // Remove item da lista de venda
+    itensVendaDiv.addEventListener('click', function(e) {
+        if (e.target.classList.contains('removerItem')) {
+            // Remove o item da array de itensVenda
+            const indexToRemove = Array.from(itensVendaDiv.children).indexOf(e.target.closest('.item-venda'));
+            itensVenda.splice(indexToRemove, 1);
+
+            // Atualiza a visualização dos itens na página
+            atualizarListaItens();
+        }
+    });
+
+    // Trigger change event on page load to filter items based on default selected type
+    tipoVendaSelect.dispatchEvent(new Event('change'));
+});
+
+
+</script>
+
+{% endblock %}

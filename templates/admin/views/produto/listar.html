@@ -1,0 +1,79 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}  
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Produtos
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge">
+                <span class="text-secondary">
+                    {{formatarNumero(total.produto)}} produto
+                </span>                
+            </span>
+            <span class="text-secondary">|</span>
+            <span class="badge text-secondary">
+                <span class="text-success">
+                    {{formatarNumero(total.produtoAtivo)}} 
+                </span>ativo
+            </span>
+            <span class="text-secondary">|</span>
+            <span class="badge text-secondary">
+                <span class="text-danger">
+                    {{formatarNumero(total.produtoInativo)}} 
+                </span>       inativo         
+            </span> 
+        </div>
+        <div>
+             <!-- Botão para baixar um PDF -->
+             <a type="button" id="botaoExportarPDF" class="btn btn-info" tooltip="tooltip" title="Baixar PDF">
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>
+            <!-- Botão para baixar um Excel -->
+            <a type="button" id="botaoExportarExcel" class="btn btn-success" tooltip="tooltip" title="Baixar Excel">
+                <i class="fa-solid fa-file-excel"></i>
+            </a>
+            <a href="{{url('admin/produto/cadastrar')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Post">
+                Cadastrar
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table id="tabelaProduto" url="{{url()}}" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Valor Custo</th>
+                        <th>Valor Venda</th>
+                        <th>Estoque</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>     
+
+
+    </div>
+</div>
+{% endblock %}

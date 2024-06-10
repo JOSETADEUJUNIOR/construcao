@@ -1,0 +1,80 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Irma
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form class="formularioAjax"
+            action="{% if irma.id %}{{url('admin/irmas/editar/'~irma.id)}}{%else%}{{url('admin/irmas/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" name="nome" id="nome" value="{{irma.nome}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" name="cpf" id="cpf" value="{{irma.cpf}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="rg" class="form-label">RG</label>
+                        <input type="text" name="rg" id="rg" value="{{irma.rg}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="data_nascimento" class="form-label">DT Nascimento</label>
+                        <input type="date" name="data_nascimento" id="data_nascimento" value="{{irma.data_nascimento}}"
+                            class="form-control">
+                    </div>
+                </div>
+               
+                
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="funcao_id" class="form-label">Função</label>
+                        <select class="form-select" name="funcao_id">
+                            <option value="1" {% if irma.status=='1' %}selected{%endif%}>Cozinha</option>
+                            <option value="0" {% if irma.status=='0' %}selected{%endif%}>Ajudante de pedreiro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="bomba_id" class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="1" {% if bomba.status=='1' %}selected{%endif%}>Ativo</option>
+                            <option value="0" {% if bomba.status=='0' %}selected{%endif%}>Inativo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary"
+                value="{% if bomba.id %}Atualizar{%else%}Cadastrar{%endif%}">
+        </form>
+    </div>
+</div>
+{% endblock %}

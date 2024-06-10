@@ -1,0 +1,107 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Bombas
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-buttom d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge">
+                <span class="text-secondary">
+                    {{formatarNumero(total.bomba)}} bombas
+                </span>                
+            </span>
+            <span class="text-secondary">|</span>
+            <span class="badge text-secondary">
+                <span class="text-success">
+                    {{formatarNumero(total.bombaAtivo)}} 
+                </span>ativo
+            </span>
+            <span class="text-secondary">|</span>
+            <span class="badge text-secondary">
+                <span class="text-danger">
+                    {{formatarNumero(total.bombaInativo)}}
+                </span>inativo                
+            </span> 
+        </div>
+        <div>
+            <!-- Botão para baixar um PDF -->
+            <a type="button" id="botaoExportarPDF" class="btn btn-info" tooltip="tooltip" title="Baixar PDF">
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>
+            <!-- Botão para baixar um Excel -->
+            <a type="button" id="botaoExportarExcel" class="btn btn-success" tooltip="tooltip" title="Baixar Excel">
+                <i class="fa-solid fa-file-excel"></i>
+            </a>
+    
+            <!-- Botão para cadastrar um novo banner -->
+            <a href="{{url('admin/bomba/cadastrar')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Tanque">
+                Cadastrar
+            </a>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped" id="tabelaBanner">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Numero da bomba</th>
+                        <th>Fabricante</th>
+                        <th>Modelo</th>
+                        <th>Numero Série</th>
+                        <th>data inativação</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bomba in bombas %}
+                    <tr>
+                        <th>{{bomba.id}}</th>
+                        <th  class="text-center">{{bomba.numero_bomba}}</th>
+                        <td class="fw-bold">{{bomba.fabricante}}</td>
+                        <td class="fw-bold">{{bomba.modelo}}</td>
+                        <td class="fw-bold">{{bomba.nro_serie}}</td>
+                        <td class="fw-bold">
+                            {% if bomba.data_inativa !='' %}
+                            {{formataData(bomba.data_inativa)}}
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if bomba.status == 1 %}
+                            <i class="fa-solid fa-circle text-success" tooltip="tooltip" title="Ativo"></i>
+                            {% else %}
+                            <i class="fa-solid fa-circle text-danger" tooltip="tooltip" title="Inativo"></i>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url('admin/bomba/editar/'~bomba.id) }}" tooltip="tooltip" title="Editar">
+                                <i class="fa-solid fa-pen m-1"></i>
+                            </a>
+                            <a href="{{ url('admin/bomba/deletar/'~bomba.id) }}" tooltip="tooltip" title="Deletar">
+                                <i class="fa-solid fa-trash m-1"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>     
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Combustíveis
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form class="formularioAjax"
+            action="{% if combustivel.id %}{{url('admin/combustivel/editar/'~combustivel.id)}}{%else%}{{url('admin/combustivel/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3" style="background-color: #bdc6db;">
+                        <span class="badge text-secondary">
+                            <span class="text-success">
+                                Markup(R$): {{combustivel.markup_valor}}
+                            </span> 
+                        </span>
+            
+                        <span class="text-secondary">|</span>
+                        <span class="badge text-secondary">
+                            <span class="text-success">
+                                Markup(%): {{combustivel.markup_percentual}}
+                            </span> 
+                        </span>
+            
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mt-10">
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <input type="text" name="descricao" id="descricao" value="{{combustivel.descricao}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="grupo" class="form-label">Grupo</label>
+                        <select class="form-select" name="grupo" id="grupo">
+                            {% for categoria in categorias %}
+                            <option value="{{categoria.id}}" {% if combustivel.grupo==categoria.id %}selected{%endif%}>
+                                {{categoria.titulo}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="categoria_id" class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="1" {% if combustivel.status=='1' %}selected{%endif%}>Ativo</option>
+                            <option value="0" {% if combustivel.status=='0' %}selected{%endif%}>Inativo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="vlr_venda" class="form-label">Valor Venda</label>
+                        <input type="text" name="vlr_venda" id="vlr_venda" value="{{combustivel.vlr_venda}}"
+                            class="form-control dinheiro1">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="custo" class="form-label">Custo</label>
+                        <input type="text" name="custo" id="custo" value="{{combustivel.custo}}"
+                            class="form-control dinheiro1">
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary"
+                value="{% if combustivel.id %}Atualizar{%else%}Cadastrar{%endif%}">
+        </form>
+    </div>
+</div>
+{% endblock %}

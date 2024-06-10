@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup</title>
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .popup-content {
+      
+      padding: 15%;
+     
+ 
+      max-width: 90%; /* Reduzindo o tamanho máximo para telas menores */
+      max-height: 90%; /* Reduzindo o tamanho máximo para telas menores */
+      overflow: auto;
+      text-align: center;
+      color: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      color: white;
+    }
+
+   
+
+    /* Animação de fade in */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Estilos para dispositivos menores */
+    @media only screen and (max-width: 768px) {
+      .popup-content {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+
+    /* Estilos para dispositivos muito pequenos (exemplo: smartphones) */
+    @media only screen and (max-width: 480px) {
+      .popup-content {
+        max-width: 80%; /* Reduzindo o tamanho máximo para telas muito pequenas */
+        max-height: 80%; /* Reduzindo o tamanho máximo para telas muito pequenas */
+        padding: 5px;
+        font-size: 12px;
+      }
+
+      .close {
+        top: 5px;
+        right: 5px;
+        font-size: 16px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="popup" class="popup" style="display: none;">
+    <input type="hidden" id="url" value="{{ url('popup') }}">
+    <div class="popup-content"
+      style="background-image: url('{{ url('uploads/slides/slide_um/arte_popup.png') }}'); background-size: contain; background-repeat: no-repeat;">
+      <span class="close" onclick="fecharPopup()">&times;</span>
+     
+      <div class="button-container">
+        <a onclick="return contaClick()"
+          href="//api.whatsapp.com/send?phone=5543984230969&text=Gostaria%20de%20agendar%20um%20hor%C3%A1rio"
+          target="_blank" class="btn btn-success btn-lg">Solicite um orçamento</a>
+      </div>
+      <a onclick="return contaClick()"
+      href="//api.whatsapp.com/send?phone=5543984230969&text=Gostaria%20de%20agendar%20um%20hor%C3%A1rio"
+      target="_blank" class="btn btn-success btn-lg">Solicite um orçamento</a>
+    </div>
+  </div>
+  <script>
+    // Função para exibir o popup após 2 segundos
+    setTimeout(function () {
+      document.getElementById('popup').style.display = 'flex';
+    }, 5000); // 2000 milissegundos = 2 segundos
+
+    // Função para fechar o pop-up
+    function fecharPopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+    
+    // Função para exibir mais informações (aqui você pode redirecionar para outra página ou expandir o conteúdo do pop-up)
+    function saberMais() {
+      alert('Mais informações podem ser exibidas aqui.');
+    }
+  </script>
+</body>
+
+</html>

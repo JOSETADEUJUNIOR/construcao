@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Painel do Usuário</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="{{ url('templates/assets/css/estilos.css') }}">
+        <link rel="stylesheet" href="{{ url('templates/saas/assets/css/saas.css') }}">       
+        
+        <link rel="shortcut icon" href="{{ url('templates/assets/img/favicon.ico') }}" />
+    </head>
+    <body> 
+        <div class="ajaxLoading">
+            <div class="spinner">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Aguarde...</p>
+            </div>
+        </div>
+
+        {% include 'topo.html' %}
+
+        <div class="container-fluid bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        {% include 'menu.html' %}
+                    </div>
+                    <div class="col-md-8 mb-4">
+                        {% block corpo %} {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'rodape.html' %}     
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ url('templates/admin/assets/js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ url('templates/admin/assets/js/datatable.js') }}"></script>
+    <script src="{{ url('templates/assets/js/scripts.js') }}"></script>
+    <script src="{{ url('templates/saas/assets/js/saas.js') }}"></script>
+</body>
+</html>

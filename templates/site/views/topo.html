@@ -1,0 +1,71 @@
+<!-- <header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{{ url() }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                 <img src="{{ url('templates/site/assets/img/php-logo.svg') }}" alt="php8.1" height="22" width="60">
+            </a>
+
+            <ul class="navbar navbar-dark bg-dark col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a href="{{ url() }}" class="nav-link px-2" tooltip="tooltip" title="Página Inicial">Home</a>
+                </li>
+                        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categorias
+          </a>
+          <ul class="dropdown-menu">
+              {% for categoria in categorias %}
+            <li>
+                <a class="dropdown-item" href="{{url('categoria/'~categoria.id)}}" tooltip="tooltip" title="{{categoria.titulo}}">
+                    {{categoria.titulo}}
+                </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+                <li>
+                    <a href="{{ url('sobre-nos') }}" class="nav-link px-2 text-white" tooltip="tooltip" title="Sobre Nós">Sobre nós</a>
+                </li>
+            </ul>
+
+            <form data-url-busca="{{ url('buscar') }}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" name="busca" id="busca" class="form-control form-control-dark text-bg-dark" placeholder="Buscar..." aria-label="Search">
+            </form>            
+
+            <div class="text-end">
+                <a href="" class="btn btn-outline-light me-2" tooltip="tooltip" title="Faça login">
+                    Entrar
+                </a>
+                <a href="" class="btn btn-warning" tooltip="tooltip" title="Junte-se a nós">
+                    Cadastre-se
+                </a>
+            </div>
+        </div>
+        
+        <div class="my-3" id="buscaResultado"></div>
+        
+    </div>
+</header> -->
+
+<header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="#">ARTHORIUS</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+    
+      
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">Sobre-nós</a></li>
+          <li><a class="nav-link scrollto" href="#services">Serviços</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
+          <li><a class="nav-link scrollto" href="{{ url('/logar') }}">Area Restrita</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+   
+  </header><!-- End Header -->
+ 

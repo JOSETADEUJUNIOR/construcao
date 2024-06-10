@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="container my-5">
+    <div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 mx-auto border rounded p-3 mb-4">
+        {{ flash() }}
+
+        <div class="alert alert-primary fw-bold" role="alert">
+            <i class="fa-solid fa-circle-info"></i> Para ativar sua conta, defina uma senha!
+        </div>
+
+        <form class="formularioAjax" action="{{url('usuario/confirmar/email/'~usuario.token)}}" method="post">
+            <div class="form-floating mb-3">
+                <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha">
+                <label for="senha">Senha</label>
+            </div> 
+            <div class="form-floating mb-3">
+                <input type="password" name="senha2" id="senha2" class="form-control" placeholder="Senha">
+                <label for="senha2">Confirme sua Senha</label>
+            </div> 
+            <div class="d-grid gap-2">
+                <input type="submit" class="btn btn-dark" value="Ativar Conta">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

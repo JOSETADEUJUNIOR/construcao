@@ -1,0 +1,63 @@
+<footer id="footer">
+  <div class="container footer-bottom clearfix">
+    <div class="row">
+      <!-- Coluna 1: Governamentais -->
+      <div class="col-md-3">
+        <h3>{{ config.config_desc}}</h3>
+        <ul class="lista-rodape">
+          <p>Endereço: {{config.config_endereco}}<br>
+            Email: {{config.config_email}}<br>
+             Telefone: <a href="https://api.whatsapp.com/send?phone=5543984230969&text=Gostaria%20de%20agendar%20um%20hor%C3%A1rio%20">{{config.config_fone1}}</a></p>
+        </ul>
+      </div>
+      
+      <!-- Coluna 2: Utilitários -->
+      <div class="col-md-3">
+        <h3>Utilitários</h3>
+        <ul class="lista-rodape">
+          <li><a href="http://www.portaldoempreendedor.gov.br/" target="_blank">Portal do Empreendedor</a></li>
+          <li><a href="http://www.leigeral.com.br/" target="_blank">Micro e Pequena Empresa</a></li>
+          <li><a href="http://cfc.org.br/" target="_blank">CFC</a></li>
+          <li><a href="http://sped.rfb.gov.br/" target="_blank">SPED</a></li>
+        </ul>
+      </div>
+      
+      <!-- Coluna 3: Diversos -->
+      <div class="col-md-3">
+        <h3>Diversos</h3>
+        <ul class="lista-rodape">
+          <li><a href="http://www.bcb.gov.br/pt-br#!/home" target="_blank">Banco Central</a></li>
+          <li><a href="https://www.inss.gov.br" target="_blank">INSS</a></li>
+          <li><a href="http://www.fbc.org.br" target="_blank">FBC</a></li>
+          <li><a href="http://www.ibracon.com.br/ibracon/Portugues/" target="_blank">IBRACON</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h3>Contate-nos</h3>
+        <ul class="lista-rodape">
+         
+          <li><a href="http://www.bcb.gov.br/pt-br#!/home" target="_blank">Banco Central</a></li>
+          <li><a href="https://www.inss.gov.br" target="_blank">INSS</a></li>
+          <li><a href="http://www.fbc.org.br" target="_blank">FBC</a></li>
+          <li><a href="http://www.ibracon.com.br/ibracon/Portugues/" target="_blank">IBRACON</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Coluna 4: Siga-nos e Direitos Autorais -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h3>Siga-nos</h3>
+        <img src="{{ url('uploads/empresa/thumbs/'~config.config_foto)}}" width="120" height="50" alt="ARTHORIUS"
+        class="logo">
+        <div class="social">
+          {% if config.config_facebook !="" %}<a href="{{ config.config_facebook }}"" class="facebook"><i class="fab fa-fw fa-facebook"></i></a>{% endif %}
+          {% if config.config_instagram !="" %}<a href="{{ config.config_twitter }}" class="twitter"><i class="fab fa-fw fa-twitter"></i></a>{% endif %}
+          {% if config.config_linkedin !="" %}<a href="{{ config.config_instagram }}" class="instagram"><i class="fab fa-fw fa-instagram"></i></a>{% endif %}
+          {% if config.config_twitter !="" %}<a href="{{ config.config_linkedin }}" class="linkedin"><i class="fab fa-fw fa-linkedin"></i></a>{% endif %}
+        </div>
+        <p class="mt-2"><small>Desenvolvido por <a href="http://www.sitecontabil.com.br/modelos" target="_blank">Sitecontabil</a> 2018 | Todos os direitos reservados.</small></p>
+      </div>
+    </div>
+  </div>
+</footer><!-- End Footer -->

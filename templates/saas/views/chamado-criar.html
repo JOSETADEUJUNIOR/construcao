@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block corpo %}
+
+{% block conteudo %}
+{{flash()}}
+<div class="bg-white p-4 my-3 rounded">
+    <div class="card-body">
+        <form
+            action="{% if solicitacao.id %}{{url('saas/solicitacao/editar/'~solicitacao.id)}}{%else%}{{url('saas/solicitacao/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Descrição do problema</label>
+                <input type="text" name="titulo" id="titulo" value="{{solicitacao.titulo}}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Qual a prioridade</label>
+                <select class="form-select" name="prioridade">
+                    <option value="">Selecione a prioridade</option>
+                    <option value="3" {% if solicitacao.prioridade=='3' %}selected{%endif%}>Alta</option>
+                    <option value="2" {% if solicitacao.prioridade=='2' %}selected{%endif%}>Média</option>
+                    <option value="1" {% if solicitacao.prioridade=='1' %}selected{%endif%}>Baixa</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="capa" class="form-label">Capa</label>
+                        <input class="form-control" type="file" id="capa" name="capa" accept=".png, .jpg, .jpeg">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="capa" class="form-label">Vídeo</label>
+                    <input class="form-control" type="file" id="video" name="video" accept=".mp4">
+                </div>
+            </div>
+            </div>
+            <div class="mb-3">
+                <label for="texto" class="form-label">Descreva o problema</label>
+                <textarea name="texto" class="form-control ckeditor" rows="3">{{solicitacao.descricao}}</textarea>
+            </div><br><br><br>
+            <hr>
+            <div class="row">
+                <h3>Vídeos e mídias</h3>
+                <div class="col-md-12">
+                    {% if solicitacao.fotos %}
+
+
+                    <div class="gallery">
+                        <a data-fancybox="gallery" data-caption="{{imagem.foto}}" class="overflow zoom "
+                            href="{{url('uploads/cliente/'~solicitacao.fotos)}}">
+                            <img src="{{url('uploads/cliente/thumbs/'~solicitacao.fotos)}}" alt="galeria">
+                        </a>
+                        <div class="desc">{{ solicitacao.fotos }}</div>
+                    </div>
+
+
+                    {% else %}
+                    <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                    {% endif %}
+                </div>
+                <div class="col-md-12">
+                   
+                    {% if solicitacao.video %}
+                    <div>
+                        <div class="">
+                            <!-- Defina uma largura máxima para o contêiner do vídeo -->
+                            <div style="max-width: 100%;">
+                                <video controls style="width: 40%;">
+                                    <source src="{{ url('uploads/video/'~solicitacao.video) }}" type="video/mp4">
+                                    Seu navegador não suporta o elemento de vídeo.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+
+            </div>
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-primary col-sm-12"
+                    value="{% if solicitacao.id %}Atualizar{%else%}Cadastrar{%endif%}">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% endblock %}

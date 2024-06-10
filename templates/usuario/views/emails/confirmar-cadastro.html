@@ -1,0 +1,15 @@
+<h2>Olá, {{ usuario.nome }}</h2>
+<h2>{{ constant('SITE_NOME') }} está muito feliz por se cadastrar!</h2>
+<hr>
+
+<p>Vamos confirmar seu endereço de e-mail?</p>
+
+<p><a href="{{ url('usuario/confirmar/email/'~usuario.token) }}" title='Confirmar Cadastro' class="botao">CLIQUE AQUI PARA CONFIRMAR</a></p>
+<hr>
+<p>Se o link acima não funcionar, copie e cole o endereço abaixo no seu navegador!</p>
+
+<p>{{ url('usuario/confirmar/email/'~usuario.token) }}</p>
+
+<hr>
+<p class="alerta">Você precisa confirmar seu endereço de e-mail para ativar o seu cadastro e poder ter acesso ao sistema.</p>
+

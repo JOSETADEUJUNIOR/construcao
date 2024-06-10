@@ -1,0 +1,93 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Posts
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge">
+                <span class="text-secondary">
+                    {{formatarNumero(total.solicitacao)}} chamado
+                </span>
+            </span>
+            <span class="text-secondary">|</span>
+            <span class="badge text-secondary">
+                <span class="text-warning">
+                    {{formatarNumero(total.solicitacaoAberto)}} Chamado em aberto
+                </span>
+                <span class="text-secondary">|</span>
+                <span class="badge text-secondary">
+                    <span class="text-info">
+                        {{formatarNumero(total.solicitacaoAndamento)}} Em andamento
+                    </span>
+                </span>
+                <span class="text-secondary">|</span>
+                <span class="badge text-secondary">
+                    <span class="text-success">
+                        {{formatarNumero(total.solicitacaoEncerrado)}} Encerrado
+                    </span>
+                </span>
+        </div>
+        <a href="{{url('saas/criarchamado')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Chamado">
+            Cadastrar
+        </a>
+    </div>
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table id="tabelaSolicitacao" url="{{url()}}" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Título</th>
+                        <th>Cliente</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">prioridade</th>
+                        <th class="text-center">Ação</th>
+                    </tr>
+                </thead>
+                <!-- <div class="offcanvas offcanvas-start" tabindex="-2" id="info{{post.id}}">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{post.titulo}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                Cadastrado em: {{ post.cadastrado_em|date("d/m/Y H:i:s") }}
+                            </li>
+                            <li class="list-group-item">
+                                Atualizado em: {{post.atualizado_em|date("d/m/Y H:i:s")}}
+                            </li>
+                            <li class="list-group-item">
+                                Última visita em: {{post.ultima_visita_em|date("d/m/Y H:i:s")}}
+                            </li>
+                            <li class="list-group-item">
+                                Cadastrado por: <b>{{post.usuario.nome}}</b>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+            </table>
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

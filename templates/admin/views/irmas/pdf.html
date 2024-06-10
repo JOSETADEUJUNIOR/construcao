@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Bombas</title>
+    <style>
+        /* Adicione seus estilos CSS aqui */
+         /* Seus outros estilos CSS aqui */
+         body {
+            font-family: Arial, sans-serif;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #337ab7;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body style="margin-left: 20px; margin-right: 20px;">
+    <h1>Relatório de Bombas</h1>
+    <table>
+        <tr>
+            <th>Numero da bomba</th>
+            <th>Fabricante</th>
+            <th>Modelo</th>
+            <th>Nro Série</th>
+            <th>Data inativação</th>
+            <th class="text-center">Status</th>
+        </tr>
+        {% for bomba in bombas %}
+        <tr>
+            <td class="fw-bold">{{bomba.numero_bomba}}</td>
+            <td class="fw-bold">{{bomba.fabricante}}</td>
+            <td class="fw-bold">{{bomba.modelo}}</td>
+            <td class="fw-bold">{{bomba.nro_serie}}</td>
+            <td class="fw-bold">
+                {% if bomba.data_inativa !='' %}
+                {{formataData(bomba.data_inativa)}}
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {% if bomba.status == 1 %}
+                <i class="fa-solid fa-circle text-success" tooltip="tooltip" title="Ativo">Ativo</i>
+                {% else %}
+                <i class="fa-solid fa-circle text-danger" tooltip="tooltip" title="Inativo">Inativo</i>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Total de bombas: {{ total.bomba }}</p>
+</body>
+</html>

@@ -1,0 +1,275 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<style>
+    .lista-itens {
+        background-color: #fff8dc;
+        padding: 10px;
+        border-radius: 5px;
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .item-venda {
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+
+    .item-venda:last-child {
+        border-bottom: none;
+    }
+</style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Caixa Aberto</li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-light border d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Operador</span><br><br>
+                <span class="text-success">{{usuario().nome}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Data/hora abertura do caixa:</span><br><br>
+                <span class="text-success">{{caixa.DataHoraAbertura | date('d/m/Y H:i:s')}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Inicial:</span><br><br>
+                <span class="text-success">{{caixa.ValorAbertura}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Movimentado:</span><br><br>
+                <span class="text-success">{{caixa.ValorAtualCaixa}}</span>
+            </span>
+            <span class="badge bg-white text-secondary border">
+                <span class="text-dark">Valor Sangria:</span><br><br>
+                <span class="text-success">{{caixa.ValorSangria}}</span>
+            </span>
+        </div>
+        <a href="{{url('admin/usuarios/cadastrar')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Post">
+            Cadastrar
+        </a>
+    </div>
+    <div class="card-body">
+        <!-- Cards com valores de combustível vendido e produto -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Valor de Combustível Vendido</h5>
+                        <p class="card-text">R$ {{ valor_combustivel_vendido }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Valor de Produto Vendido</h5>
+                        <p class="card-text">R$ {{ valor_produto_vendido }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abas de navegação -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="venda-produto-tab" data-bs-toggle="tab"
+                    data-bs-target="#venda-produto" type="button" role="tab" aria-controls="venda-produto"
+                    aria-selected="true">Venda de Produto</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="venda-combustivel-tab" data-bs-toggle="tab"
+                    data-bs-target="#venda-combustivel" type="button" role="tab" aria-controls="venda-combustivel"
+                    aria-selected="false">Venda de Combustível</button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Venda de Produto Tab -->
+            <div class="tab-pane fade show active" id="venda-produto" role="tabpanel"
+                aria-labelledby="venda-produto-tab">
+                    <!-- Venda de Produto Tab -->
+                    <div class="tab-pane fade show active" id="venda-produto" role="tabpanel"
+                        aria-labelledby="venda-produto-tab">
+                        <form action="{{url('admin/caixa/venda-produto')}}" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="produto" class="form-label">Produto</label>
+                                    <select class="form-select" id="produto" name="produto">
+                                        {% for item in produtos %}
+                                        <option value="{{item.id}}" data-tipo="produto" data-nome="{{item.Nome}}" data-valor="{{item.PrecoVenda}}" data-quantidade-disponivel="{{item.estoque}}">{{item.Nome}} / R$:{{item.PrecoVenda}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="quantidade" class="form-label">Quantidade</label>
+                                    <input type="number" class="form-control" id="quantidade"
+                                        name="quantidade" min="1">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button type="submit" class="btn btn-primary mt-4">Adicionar Produto</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-buttom d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge">
+                                        <span class="text-secondary">
+                                             tanques
+                                        </span>                
+                                    </span>
+                                    <span class="text-secondary">|</span>
+                                    <span class="badge text-secondary">
+                                        <span class="text-success">
+                                             
+                                        </span>ativo
+                                    </span>
+                                    <span class="text-secondary">|</span>
+                                    <span class="badge text-secondary">
+                                        <span class="text-danger">
+                                            
+                                        </span>inativo                
+                                    </span> 
+                                </div>
+                                <div>
+                                    <!-- Botão para baixar um PDF -->
+                                    <a type="button" id="botaoExportarPDF" class="btn btn-info" tooltip="tooltip" title="Baixar PDF">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </a>
+                                    <!-- Botão para baixar um Excel -->
+                                    <a type="button" id="botaoExportarExcel" class="btn btn-success" tooltip="tooltip" title="Baixar Excel">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                    </a>
+                            
+                                    <!-- Botão para cadastrar um novo banner -->
+                                    <a href="{{url('admin/tanque/cadastrar')}}" class="btn btn-dark" tooltip="tooltip" title="Cadastrar Tanque">
+                                        Cadastrar
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped" id="tabelaBanner">
+                                        <thead>
+                                            <tr>
+                                                <th>Produto</th>
+                                                <th>Quantidade</th>
+                                                <th>Preço Custo</th>
+                                                <th>Preço Venda</th>
+                                                <th>Valor Total Venda</th>
+                                                <th>Valor Total Custo</th>
+                                                <th>Lucro Bruto</th>
+                                                <th>Margem R$</th>
+                                                <th>Margem %</th>
+                                                <th>Data lançamento</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for venda in vendasProdutos %}
+                                            <tr>
+                                                <th>{{venda.produto}}</th>
+                                                <th>{{venda.quantidade}}</th>
+                                                <td class="fw-bold">{{venda.preco_custo}}</td>
+                                                <td class="fw-bold">{{venda.preco_venda}}</td>
+                                                <td class="fw-bold">{{venda.valor_total_venda}}</td>
+                                                <td class="fw-bold">{{venda.valor_total_custo}}</td>
+                                                <td class="fw-bold">{{venda.lucro_bruto}}</td>
+                                                <td class="fw-bold">{{venda.margem_reais}}</td>
+                                                <td class="fw-bold">{{venda.margem_porcentagem}}</td>
+                                                <td class="fw-bold">{{venda.data_hora}}</td>
+                                                <td class="text-center">
+                                                    {% if venda.status == 1 %}
+                                                    <i class="fa-solid fa-circle text-success" tooltip="tooltip" title="Ativo"></i>
+                                                    {% else %}
+                                                    <i class="fa-solid fa-circle text-danger" tooltip="tooltip" title="Inativo"></i>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="{{ url('admin/venda/editar/'~venda.id) }}" tooltip="tooltip" title="Editar">
+                                                        <i class="fa-solid fa-pen m-1"></i>
+                                                    </a>
+                                                    <a href="{{ url('admin/venda/deletar/'~venda.id) }}" tooltip="tooltip" title="Deletar">
+                                                        <i class="fa-solid fa-trash m-1"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {%endfor%}
+                                        </tbody>
+                                    </table>
+                                </div>     
+                        
+                        
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Venda de Combustível Tab -->
+                    <div class="tab-pane fade" id="venda-combustivel" role="tabpanel"
+                        aria-labelledby="venda-combustivel-tab">
+                        <form action="{{url('admin/caixa/venda')}}" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="combustivel" class="form-label">Combustível</label>
+                                    <select class="form-select" id="combustivel" name="combustivel">
+                                        <!-- Opções de combustíveis -->
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="quantidade-combustivel" class="form-label">Quantidade (Litros)</label>
+                                    <input type="number" class="form-control" id="quantidade-combustivel"
+                                        name="quantidade-combustivel" min="1">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button type="submit" class="btn btn-primary mt-4">Adicionar Combustível</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+
+
+
+
+
+                
+            </div>
+            <!-- Venda de Combustível Tab -->
+            <div class="tab-pane fade" id="venda-combustivel" role="tabpanel" aria-labelledby="venda-combustivel-tab">
+                <form action="{{url('admin/caixa/venda')}}" method="post">
+                    <!-- Formulário de venda de combustível -->
+                </form>
+            </div>
+        </div>
+
+        <!-- Itens Adicionados -->
+        <div class="lista-itens mt-3">
+            <!-- Lista de itens adicionados -->
+        </div>
+
+        <!-- Sangria e Acréscimos -->
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <!-- Formulário de sangria -->
+            </div>
+            <div class="col-md-6">
+                <!-- Formulário de acréscimos -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

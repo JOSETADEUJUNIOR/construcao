@@ -1,0 +1,83 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Informar dados de configuração
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form
+            action="{{url('admin/configuracao/editar/'~dados.id) }}"
+            method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="mb-3 col-md-3">
+                    <label for="config_nome" class="form-label">Nome da empresa*</label>
+                    <input type="text" name="config_nome" id="config_nome" value="{{dados.config_nome}}" class="form-control">
+                </div>
+                <div class="mb-3 col-md-3">
+                    <label for="titulo" class="form-label">Endereço da empresa*</label>
+                    <input type="text" name="config_endereco" id="config_endereco" value="{{dados.config_endereco}}" class="form-control">
+                </div>
+                <div class="mb-3 col-md-3">
+                    <label for="titulo" class="form-label">CEP da empresa</label>
+                    <input type="text" name="config_cep" id="config_cep" value="{{dados.config_cep}}" class="form-control">
+                </div>
+                <div class="mb-3 col-md-3">
+                    <label for="titulo" class="form-label">Horário de funcionamento</label>
+                    <input type="text" name="config_horario" id="config_horario" value="{{dados.config_horario}}" class="form-control">
+                </div>
+                <div class="mb-3 col-md-3">
+                    <label for="titulo" class="form-label">Telefone WhatsApp</label>
+                    <input type="text" name="config_fone1" id="config_fone1" value="{{dados.config_fone1}}" class="form-control">
+                </div>
+                <div class="mb-3 col-md-3">
+                    <label for="titulo" class="form-label">Telefone Fixo</label>
+                    <input type="text" name="config_fone2" id="config_fone2" value="{{dados.config_fone2}}" class="form-control">
+                </div>
+                <div class="mb-6 col-md-6">
+                    <label for="email" class="form-label">E-mail da empresa</label>
+                    <input type="text" name="config_email" id="config_email" value="{{dados.config_email}}" class="form-control">
+                </div>
+                <div class="mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Meta Keywords</label>
+                    <input type="text" name="config_site_keywords" id="config_site_keywords" value="{{dados.config_site_keywords}}" class="form-control">
+                </div>
+                <div class="mb-12 col-md-12">
+                    <label for="titulo" class="form-label">Descrição (Meta description)</label>
+                    <input type="text" name="config_site_description" id="config_site_description" value="{{dados.config_site_description}}" class="form-control">
+                </div>
+               
+                <div class="col-md-9">
+                    <div class="mb-3">
+                        <label for="capa" class="form-label">Logo da empresa</label>
+                        <input class="form-control" type="file" id="capa" name="logo" accept=".png, .jpg, .jpeg">
+                    </div>
+                </div>
+                
+            </div>
+           
+            <div class="mb-3">
+                <label for="texto" class="form-label">Sobre a empresa</label>
+                <textarea name="config_sobre" class="form-control ckeditor" rows="3">{{dados.config_site_ga}}</textarea>
+            </div>
+            <div class="d-grid">
+                <input type="submit" class="btn btn-dark" value="{% if dados.id %}Atualizar{%else%}Cadastrar{%endif%}">
+            </div>
+
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

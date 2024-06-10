@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Banners</title>
+    <style>
+        /* Adicione seus estilos CSS aqui */
+         /* Seus outros estilos CSS aqui */
+         body {
+            font-family: Arial, sans-serif;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #337ab7;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body style="margin-left: 20px; margin-right: 20px;">
+    <h1>Relatório de Banners</h1>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Data Início</th>
+            <th>Data Fim</th>
+            <th class="text-center">Status</th>
+            <th>Link</th>
+        </tr>
+        {% for banner in banners %}
+        <tr>
+            <td class="fw-bold">{{banner.titulo}}</td>
+            <td class="fw-bold">{{banner.data_inicio | date('d/m/Y')}}</td>
+            <td class="fw-bold">{{banner.data_fim | date('d/m/Y')}}</td>
+            <td class="text-center">
+                {% if banner.status == 1 %}
+                <i class="fa-solid fa-circle text-success" tooltip="tooltip" title="Ativo">Ativo</i>
+                {% else %}
+                <i class="fa-solid fa-circle text-danger" tooltip="tooltip" title="Inativo">Inativo</i>
+                {% endif %}
+            </td>
+            <td class="fw-bold"><a href="{% if banner.link starts with 'http' %}{{ banner.link }}{% else %}http://{{ banner.link }}{% endif %}" target="_blank">{{ banner.link }}</a></td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Total de Banners: {{ total.banners }}</p>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Clientes
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+
+<div class=" p-3 border-0 card shadow-sm">
+
+
+    <!-- Abas -->
+    <ul class="nav nav-tabs" id="clienteTabs" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="dadosCliente-tab" data-bs-toggle="tab" href="#dadosCliente" role="tab"
+                aria-controls="dadosCliente" aria-selected="true">Dados do Cliente</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="enderecos-tab" data-bs-toggle="tab" href="#enderecos" role="tab"
+                aria-controls="enderecos" aria-selected="false">Endereços</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="dadosAdicionais-tab" data-bs-toggle="tab" href="#dadosAdicionais" role="tab"
+                aria-controls="dadosAdicionais" aria-selected="false">Dados Adicionais</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="observacoes-tab" data-bs-toggle="tab" href="#observacoes" role="tab"
+                aria-controls="observacoes" aria-selected="false">Observações</a>
+        </li>
+    </ul>
+
+    <!-- Conteúdo das Abas -->
+    <form class="formularioAjax"
+        action="{% if cliente.id %}{{url('admin/clientes/editar/'~cliente.id)}}{%else%}{{url('admin/clientes/cadastrar')}}{%endif%}"
+        method="post">
+        <div class="tab-content" id="clienteTabsContent">
+            <div class="tab-pane fade show active" id="dadosCliente" role="tabpanel" aria-labelledby="dadosCliente-tab">
+                <div class="row">
+                    <div class="mt-3 mb-1 col-sm-5">
+                        <label for="titulo" class="form-label ">Nome</label>
+                        <input type="text" name="nome" id="nome" value="{{cliente.nome}}" class="form-control obg">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-5">
+                        <label for="sobrenome" class="form-label">Sobrenome</label>
+                        <input type="text" name="sobrenome" id="sobrenome" value="{{cliente.sobrenome}}" class="form-control">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-2">
+                        <label for="titulo" class="form-label">Status do cliente</label>
+                        <select class="form-select" name="status">
+                            <option value="1" {% if categoria.status=='1' %}selected{%endif%}>Ativo</option>
+                            <option value="0" {% if categoria.status=='0' %}selected{%endif%}>Inativo</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-3">
+                        <label for="titulo" class="form-label">Data nascimento</label>
+                        <input type="date" name="dataNascimento" id="dataNascimento" value="{{cliente.dataNascimento}}"
+                            class="form-control">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-4">
+                        <label for="titulo" class="form-label">CPF</label>
+                        <input type="text" name="cpf" id="cpf" value="{{cliente.cpf}}" class="form-control">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-5">
+                        <label for="titulo" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" value="{{cliente.email}}" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="enderecos" role="tabpanel" aria-labelledby="enderecos-tab">
+                <!-- Conteúdo da aba "Endereços" -->
+                <div class="row">
+                    <div class="mt-3 mb-1 col-sm-2">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="text" name="cep" id="cep" onblur="BuscarCep()" value="{{cliente.cep}}" class="form-control cep">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-8">
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" name="endereco" id="rua" value="{{cliente.endereco}}"
+                            class="form-control rua">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-2">
+                        <label for="numero" class="form-label">Numero</label>
+                        <input type="text" name="numero" id="numero" value="{{cliente.numero}}" class="form-control">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-4">
+                        <label for="bairro" class="form-label">Bairro</label>
+                        <input type="text" name="bairro" id="bairro" value="{{cliente.bairro}}" class="form-control bairro">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-4">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" name="estado" id="estado" value="{{cliente.estado}}" class="form-control estado">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-4">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <input type="text" name="cidade" id="cidade" value="{{cliente.cidade}}" class="form-control cidade">
+                    </div>
+                    <div class="mt-3 mb-1 col-sm-12">
+                        <label for="complemento" class="form-label">Complemento</label>
+                        <input type="text" name="complemento" id="complemento" value="{{cliente.complemento}}"
+                            class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="dadosAdicionais" role="tabpanel" aria-labelledby="dadosAdicionais-tab">
+                <!-- Conteúdo da aba "Dados Adicionais" -->
+                <!-- Adapte o código do formulário para esta seção -->
+            </div>
+            <div class="tab-pane fade" id="observacoes" role="tabpanel" aria-labelledby="observacoes-tab">
+                <!-- Conteúdo da aba "Observações" -->
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Texto</label>
+                    <textarea name="observacoes" class="form-control ckeditor" rows="3">{{cliente.observacoes}}</textarea>
+                </div>
+                <div class="d-grid mt-3">
+                    <input type="submit" class="btn btn-dark" value="{% if cliente.id %}Atualizar{%else%}Cadastrar{%endif%}">
+                </div>
+            </div>
+           
+        </div>
+</div>
+</form>
+{% endblock %}

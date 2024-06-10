@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block corpo %}
+
+{% block conteudo %} 
+
+<div class="bg-white p-5 mt-3 rounded">
+    {{ flash() }}
+    <div class="row">
+        <div class="col-md-12 col-lg-6 mb-4">
+            <div class="text-center text-sm-center text-md-start text-xl-start">
+                <h5 class="pb-4">Minha Conta</h5>
+
+                <div class="mb-4">
+                    <p class="mb-1">{{usuario.nome}}</p>
+                    <p class="text-break">{{usuario.email}}</p>
+                </div>
+
+
+                <a href="#" tooltip="tooltip" title="Alterar meus dados" class="btn btn-lg btn-outline-dark text-uppercase">
+                    <span class="fs-6">
+                        Alterar dados
+                    </span>
+                </a>
+            </div>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+            <div class="alert alert-light" role="alert">
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item border-0 bg-transparent">
+                        <span class="fw-bold">Nome:</span> {{usuario.nome}}
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">
+                        <span class="fw-bold">CPF:</span> {{usuario.cpf}}
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">
+                        <span class="fw-bold">Data de Cadastro:</span> {{ usuario.nascimento|date("d/m/Y") }}
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">
+                        <span class="fw-bold">Telefone:</span> {{usuario.telefone}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>   
+</div>
+
+{% endblock %}
+
+{% endblock %}

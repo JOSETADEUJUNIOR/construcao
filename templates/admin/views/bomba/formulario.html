@@ -1,0 +1,72 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Bomba
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form class="formularioAjax"
+            action="{% if bomba.id %}{{url('admin/bomba/editar/'~bomba.id)}}{%else%}{{url('admin/bomba/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="numero_bomba" class="form-label">Numero da bomba</label>
+                        <input type="text" name="numero_bomba" id="numero_bomba" value="{{bomba.numero_bomba}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="fabricante" class="form-label">Fabricante</label>
+                        <input type="text" name="fabricante" id="fabricante" value="{{bomba.fabricante}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3 mt-10">
+                    <div class="mb-3">
+                        <label for="modelo" class="form-label">Modelo</label>
+                        <input type="text" name="modelo" id="modelo" value="{{bomba.modelo}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="nro_serie" class="form-label">Numero de Série</label>
+                        <input type="text" name="nro_serie" id="nro_serie" value="{{bomba.nro_serie}}"
+                            class="form-control">
+                    </div>
+                </div>
+               
+                
+            </div>
+            <div class="row">
+               
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="bomba_id" class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="1" {% if bomba.status=='1' %}selected{%endif%}>Ativo</option>
+                            <option value="0" {% if bomba.status=='0' %}selected{%endif%}>Inativo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary"
+                value="{% if bomba.id %}Atualizar{%else%}Cadastrar{%endif%}">
+        </form>
+    </div>
+</div>
+{% endblock %}

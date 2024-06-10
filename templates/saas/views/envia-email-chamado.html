@@ -1,0 +1,29 @@
+<h2>Olá, {{ usuario.nome }}</h2>
+<h2>Obrigado por entrar em contato conosco!</h2>
+<hr>
+
+<p>Seu chamado foi recebido com sucesso. Nossa equipe já está trabalhando para resolver sua solicitação.</p>
+
+<p>Detalhes do chamado:</p>
+<ul>
+    <h2>Chamado Numero: {{ chamado_numero }}</h2>
+    <li><strong>Data do chamado:</strong> {{ data }}</li>
+    <li><strong>Título:</strong> {{ chamado.titulo }}</li>
+    <li><strong>Descrição:</strong> {{ chamado.descricao | raw }}</li>
+    <li><strong>Prioridade:</strong>
+        {% if chamado.prioridade == 1%}
+       Baixa
+        {% elseif chamado.prioridade == 2%}
+        Média
+        {% elseif chamado.prioridade == 3%}
+        Alta
+        {% endif %}
+</ul>
+
+<hr>
+<p>Você será informado sobre qualquer atualização no status do seu chamado.</p>
+
+<p>Se precisar de mais alguma coisa, não hesite em nos contatar.</p>
+
+<p>Atenciosamente,<br>
+{{ constant('SITE_NOME') }}</p>

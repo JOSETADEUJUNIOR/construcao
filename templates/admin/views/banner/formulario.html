@@ -1,0 +1,70 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            banners
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form class="formularioAjax"
+            action="{% if banner.id %}{{url('admin/banner/editar/'~banner.id)}}{%else%}{{url('admin/banner/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" name="titulo" id="titulo" value="{{banner.titulo}}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="data_inicio" class="form-label">Data Início</label>
+                <input type="text" name="data_inicio" id="data_inicio" value="{{banner.data_inicio | date('d/m/Y')}}"
+                    class="form-control date">
+            </div>
+            <div class="mb-3">
+                <label for="data_fim" class="form-label">Data Fim</label>
+                <input type="text" name="data_fim" id="data_fim" value="{{banner.data_fim | date('d/m/Y')}}" class="form-control date">
+            </div>
+            <div class="mb-3">
+                <label for="link" class="form-label">Link</label>
+                <input type="text" name="link" id="link" value="{{banner.link}}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="imagem" class="form-label">Imagem (1366 x 750px)</label>
+                <input class="form-control" type="file" id="imagem" name="imagem" accept=".png, .jpg, .jpeg">
+            </div>
+            <div class="col-md-12">
+                {% if banner.imagem %}
+                <div class="gallery">
+                  <a data-fancybox="gallery" data-caption="{{banner.imagem}}" class="overflow zoom " href="{{url('uploads/banner/'~banner.imagem)}}">
+                      <img src="{{url('uploads/banner/thumbs/'~banner.imagem)}}" alt="galeria">
+                    </a>
+                </div>
+
+                {% else %}
+                <img src="{{url('templates/admin/assets/img/semcapa.png')}}" class="capa" />
+                {% endif %}  
+            </div>
+
+
+            <div class="mb-3">
+                <select class="form-select" name="status">
+                    <option value="1" {% if banner.status=='1' %}selected{%endif%}>Ativo</option>
+                    <option value="0" {% if banner.status=='0' %}selected{%endif%}>Inativo</option>
+                </select>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="{% if banner.id %}Atualizar{%else%}Cadastrar{%endif%}">
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

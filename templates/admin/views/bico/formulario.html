@@ -1,0 +1,72 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Bico
+        </li>
+    </ol>
+</nav>
+{{flash()}}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form class="formularioAjax"
+            action="{% if bico.id %}{{url('admin/bico/editar/'~bico.id)}}{%else%}{{url('admin/bico/cadastrar')}}{%endif%}"
+            method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mt-10">
+                    <div class="mb-3">
+                        <label for="numero_bico" class="form-label">Numero do bico</label>
+                        <input type="text" name="numero_bico" id="numero_bico" value="{{bico.numero_bico}}"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="tanque_id" class="form-label">Tanque</label>
+                        <select class="form-select" name="tanque_id" id="tanque_id">
+                            <option value="">selecione o tanque</option>
+                            {% for tanque in tanques %}
+                            <option value="{{tanque.id}}" {% if bico.tanque_id==tanque.id %}selected{%endif%}>
+                                {{tanque.numero_tanque}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="bomba_id" class="form-label">Bomba</label>
+                        <select class="form-select" name="bomba_id" id="bomba_id">
+                            <option value="">selecione a bomba</option>
+                            {% for bomba in bombas %}
+                            <option value="{{bomba.id}}" {% if bico.bomba_id==bomba.id %}selected{%endif%}>
+                                {{bomba.numero_bomba}}-{{bomba.fabricante}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="categoria_id" class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="1" {% if bico.status=='1' %}selected{%endif%}>Ativo</option>
+                            <option value="0" {% if bico.status=='0' %}selected{%endif%}>Inativo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="{% if bico.id %}Atualizar{%else%}Cadastrar{%endif%}">
+        </form>
+    </div>
+</div>
+{% endblock %}

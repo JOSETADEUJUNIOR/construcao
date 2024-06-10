@@ -1,0 +1,51 @@
+{% extends "dashboard.html" %}
+
+{% block conteudo %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{url('admin/dashboard')}}">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Caixa
+        </li>
+    </ol>
+</nav>
+
+{{ flash() }}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Informações do Caixa</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-10">
+                    <p>Data de abertura: {{data | date('d/m/Y H:i:s')}}</p>
+                    <p>Operador: {{usuario().nome}}</p>
+                   
+                </div>
+            </div>
+           
+
+        </div>
+        <form action="{{url('admin/caixa/abrir')}}" method="post" class="">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <input type="text" name="valorAbertura" id="valorAbertura" placeholder="Digite o troco no caixa" value="{{caixa.valorAbertura}}" class="form-control dinheiro" required>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="d-grid">
+                <input type="submit" class="btn btn-dark" value="Abrir Caixa">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

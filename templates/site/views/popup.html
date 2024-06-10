@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Example</title>
+  <style>
+    /* Estilo do popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #1b283f; /* Cor de fundo do popup */
+      padding:25px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra */
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      max-width: 80%; /* Tamanho máximo do popup em relação à largura da janela */
+      max-height: 90%; /* Tamanho máximo do popup em relação à altura da janela */
+    }
+    /* Estilo da imagem de fundo */
+    .popup-image {
+      width: 100%;
+      max-width: 550px; /* Tamanho máximo da imagem */
+      border-radius: 10px;
+    }
+
+   /* Estilo do botão */
+   .popup-button {
+      margin-top: auto; /* Botão no final do popup */
+      margin-bottom: 10px; /* Espaço entre o botão e a imagem */
+      padding: 10px 20px;
+      background-color: #4CAF50; /* Cor de fundo do botão */
+      color: rgb(40, 8, 107); /* Cor do texto */
+      text-decoration: none; /* Remover sublinhado */
+      border-radius: 5px; /* Borda arredondada */
+      cursor: pointer; /* Cursor de ponteiro ao passar por cima */
+    }
+    /* Estilo do botão de fechar */
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: #666666;
+      cursor: pointer; /* Cursor de ponteiro ao passar por cima */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Popup -->
+<div id="popup" class="popup" style="display: none;">
+  <div class="popup-content">
+    <input type="hidden" id="url" value="{{ url('popup') }}">
+    <span class="close-button" onclick="fecharPopup()">&times;</span> 
+    <img class="popup-image" src="{{url('uploads/slides/slide_um/arte_popup.png')}}" alt="Imagem de Exemplo">
+    <a onclick="return contaClick()"
+    href="//api.whatsapp.com/send?phone=5543984230969&text=Gostaria%20de%20agendar%20um%20hor%C3%A1rio"
+    target="_blank" class="popup-button">Solicite um orçamento</a>
+  </div>
+</div>
+
+<script>
+  // Função para exibir o popup após 5 segundos
+  setTimeout(function() {
+    document.getElementById('popup').style.display = 'flex';
+  }, 5000); // 5000 milissegundos = 5 segundos
+  // Função para fechar o popup
+  function fecharPopup() {
+    document.getElementById('popup').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
